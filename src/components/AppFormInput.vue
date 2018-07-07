@@ -1,23 +1,51 @@
 <template>
   <div>
-    {{ msg }}
+    <div>{{ msg }}</div>
+    <div>input: {{ fakeDataItemType }}</div>
+    <div>
+      Format type tags:
+      <ul>
+        <li
+          v-for="(tag, key) in formatTypeTags"
+          :key="key"
+          >
+          <span>{{ tag }}</span>
+        </li>
+      </ul>
+    </div>
+    <AppInput
+      label="Data type"
+      v-model="fakeDataItemType"
+      @keyup.enter="AddDataItemType($event)"
+    />
+    <AppInput
+      label="Data recurrences"
+      v-model="fakeDataItemRecurrences"
+      @blur="setFakeDataItemRecurrences($event)"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import {State, Action} from 'vuex-class'
-@Component
+import {Getter, State, Action} from 'vuex-class'
+import AppInput from './AppInput.vue'
+@Component({components: {AppInput}})
 export default class AppForm extends Vue {
   @Prop() private msg!: string;
+  fakeDataItemType: string = "JSON"
+  fakeDataItemRecurrences: number = 1
+  @Getter('formatTypeTags') formatTypeTags: any
   @State('fakeDataItems') fakeDataItems: any
-  @Action('generateFakeDataItem') generateFakeDataItem: any
-  created() {
-    console.log(this.fakeDataItems)
+  @Action('addFakeDataItemType') addFakeDataItemType: any
+  AddDataItemType(event: {target: HTMLInputElement}) {
+    this.addFakeDataItemType(event.target.value)
   }
-  generate() {
-    this.generateFakeDataItem()
-  }
+  
+  
+  @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
+  
+ 
 }
 </script>
 

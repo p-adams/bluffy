@@ -1,9 +1,38 @@
 <template>
-    <div></div>
+    <div>
+        <label :for="label">{{ label }}</label>
+        <input
+            v-bind="$attrs"
+            v-bind:value="value"
+            v-on="appInputListeners"
+        />
+    </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+    props: {
+        label: {
+            type: String
+        },
+        value: {
+            type: [Number, String]
+        }
+    },
+    computed: {
+        appInputListeners: function() {
+            const self = this
+            return Object.assign({},
+                this.$listeners, {
+                    input: function(event: {target: HTMLInputElement}) {
+                        self.$emit('input', event.target.value)
+                    },
+                    blur: function(event: {target: HTMLInputElement}) {
+                        self.$emit('blur', event.target.value)
+                    }
+                })
+        }
+    }
     
 })
 </script>
