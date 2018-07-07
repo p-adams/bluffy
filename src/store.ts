@@ -2,20 +2,29 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 interface fakeDataItem {
-  types: string[];
+  types: fakeDataItemType[];
   recurrences: number;
   body: object;
+}
+
+interface fakeDataItemType {
+  text: string;
+  selected: boolean;
 }
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    fakeDataItem: { types: ["JSON"], recurrences: 1, body: {} } as fakeDataItem,
+    fakeDataItem: {
+      types: [{ text: "JSON", selected: true }],
+      recurrences: 1,
+      body: {}
+    } as fakeDataItem,
     fakeDataItems: <any>[]
   },
   mutations: {
-    addFakeDataItemType(state, type: string) {
+    addFakeDataItemType(state, type: fakeDataItemType) {
       state.fakeDataItem.types.push(type);
     },
     setFakeDataItemRecurrences(state, recurrences: number) {

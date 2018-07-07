@@ -9,7 +9,7 @@
           v-for="(tag, key) in formatTypeTags"
           :key="key"
           >
-          <span>{{ tag }}</span>
+          <span class="tagBg">{{ tag.text }}</span>
         </li>
       </ul>
     </div>
@@ -39,7 +39,7 @@ export default class AppForm extends Vue {
   @State('fakeDataItems') fakeDataItems: any
   @Action('addFakeDataItemType') addFakeDataItemType: any
   AddDataItemType(event: {target: HTMLInputElement}) {
-    this.addFakeDataItemType(event.target.value)
+    this.addFakeDataItemType({text: event.target.value, selected: true})
   }
   
   
@@ -64,5 +64,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.tagBg {
+  background: red;
 }
 </style>
