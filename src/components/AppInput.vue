@@ -2,6 +2,7 @@
     <div>
         <label :for="label">{{ label }}</label>
         <input
+            :type="type"
             v-bind="$attrs"
             v-bind:value="value"
             v-on="appInputListeners"
@@ -17,8 +18,13 @@ export default Vue.extend({
         },
         value: {
             type: [Number, String]
+        },
+        type: {
+            type: String,
+            default: "text"
         }
     },
+    created() {console.log(this.type)},
     computed: {
         appInputListeners: function() {
             const self = this

@@ -13,16 +13,24 @@
         </li>
       </ul>
     </div>
-    <AppInput
-      label="Data type"
-      v-model="fakeDataItemType"
-      @keyup.enter="AddDataItemType($event)"
-    />
-    <AppInput
-      label="Data recurrences"
-      v-model="fakeDataItemRecurrences"
-      @blur="setFakeDataItemRecurrences($event)"
-    />
+    <form>
+      <AppInput
+        label="Data format type"
+        v-model="fakeDataItemType"
+        @keyup.enter="AddDataItemType($event)"
+      />
+      <AppInput
+        label="Data recurrences"
+        v-model="fakeDataItemRecurrences"
+        @blur="setFakeDataItemRecurrences($event)"
+        type="number"
+      />
+      <AppInput
+        label="Data fields"
+        v-model="fakeDataItemBody"
+        @blur="validateFakeDataItemBody"
+      />
+    </form>
   </div>
 </template>
 
@@ -35,6 +43,8 @@ export default class AppForm extends Vue {
   @Prop() private msg!: string;
   fakeDataItemType: string = "JSON"
   fakeDataItemRecurrences: number = 1
+  fakeDataItemBody: string = ""
+  isDataItemBodyValid: boolean = true
   @Getter('formatTypeTags') formatTypeTags: any
   @State('fakeDataItems') fakeDataItems: any
   @Action('addFakeDataItemType') addFakeDataItemType: any
@@ -44,6 +54,10 @@ export default class AppForm extends Vue {
   
   
   @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
+
+  validateFakeDataItemBody(){
+    console.log(JSON.parse(this.fakeDataItemBody))
+  }
   
  
 }
