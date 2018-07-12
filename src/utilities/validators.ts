@@ -1,5 +1,5 @@
 import { Validator } from "jsonschema";
 
-export function jsonValidator(jsonString: string, schema: any): boolean {
-  return new Validator().validate(4, schema).valid;
+export function jsonValidator(jsonString: object, schema: any): boolean {
+  return new Validator().validate(jsonString, schema).valid;
 }

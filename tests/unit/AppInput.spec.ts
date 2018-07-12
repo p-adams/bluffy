@@ -1,14 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
-/* import AppInput from '@/components/AppInput.vue'
+import AppInput from "@/components/AppInput.vue";
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
-    })
-    expect(wrapper.text()).toMatch(msg)
-  })
-})
-
-*/
+describe("AppInput.vue", () => {
+  it("renders props.label when passed", () => {
+    const label = "Name";
+    const wrapper = shallowMount(AppInput, {
+      propsData: { label }
+    });
+    expect(wrapper.text()).toMatch(label);
+  });
+});
