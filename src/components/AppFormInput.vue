@@ -36,8 +36,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import {Getter, State, Action} from 'vuex-class'
+import { Getter, State, Action } from 'vuex-class'
 import AppInput from './AppInput.vue'
+import { jsonValidator } from '../utilities/validators.js'
 @Component({components: {AppInput}})
 export default class AppForm extends Vue {
   @Prop() private msg!: string;
@@ -45,15 +46,19 @@ export default class AppForm extends Vue {
   fakeDataItemRecurrences: number = 1
   fakeDataItemBody: string = ""
   isDataItemBodyValid: boolean = true
-  @Getter('formatTypeTags') formatTypeTags: any
+  
+  
   @State('fakeDataItems') fakeDataItems: any
   @Action('addFakeDataItemType') addFakeDataItemType: any
+  @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
+
+  @Getter('formatTypeTags') formatTypeTags: any
   AddDataItemType(event: {target: HTMLInputElement}) {
     this.addFakeDataItemType({text: event.target.value, selected: true})
   }
   
   
-  @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
+
 
   validateFakeDataItemBody(){
     console.log(JSON.parse(this.fakeDataItemBody))
