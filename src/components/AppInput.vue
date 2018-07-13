@@ -6,6 +6,7 @@
             v-bind="$attrs"
             v-bind:value="value"
             v-on="appInputListeners"
+            width="500px"
         />
     </div>
 </template>
@@ -24,7 +25,6 @@ export default Vue.extend({
             default: "text"
         }
     },
-    created() {console.log(this.type)},
     computed: {
         appInputListeners: function() {
             const self = this
@@ -42,3 +42,9 @@ export default Vue.extend({
     
 })
 </script>
+<style lang="scss" scoped>
+label {
+  font-weight: bolder;
+}
+</style>
+

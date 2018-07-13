@@ -4,6 +4,7 @@ import Vuex from "vuex";
 interface fakeDataItem {
   types: fakeDataItemType[];
   recurrences: number;
+  schema: object;
   body: object;
 }
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     fakeDataItem: {
       types: [{ text: "JSON", selected: true }],
       recurrences: 1,
+      schema: {},
       body: {}
     } as fakeDataItem,
     fakeDataItems: <any>[]
@@ -29,6 +31,9 @@ export default new Vuex.Store({
     },
     setFakeDataItemRecurrences(state, recurrences: number) {
       state.fakeDataItem.recurrences = recurrences;
+    },
+    setFakeDataItemSchema(state, schema: object) {
+      state.fakeDataItem.schema = schema;
     },
     setFakeDataItemBody(state, body: object) {
       state.fakeDataItem.body = body;
@@ -43,6 +48,9 @@ export default new Vuex.Store({
     },
     setFakeDataItemRecurrences({ commit }, recurrences: number) {
       commit("setFakeDataItemRecurrences", recurrences);
+    },
+    setFakeDataItemSchema({ commit }, schema: object) {
+      commit("setFakeDataItemSchema", schema);
     },
     setFakeDataItemBody({ commit }, body: object) {
       commit("setFakeDataItemBody", body);

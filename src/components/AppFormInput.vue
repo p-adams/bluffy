@@ -25,11 +25,15 @@
         @blur="setFakeDataItemRecurrences($event)"
         type="number"
       />
-      <AppInput
-        label="Data fields"
-        v-model="fakeDataItemBody"
-        @blur="validateFakeDataItemBody"
+      <AppTextarea
+        label="Define your data schema"
+        @input="onHandleFakeDataItemSchema($event)"
       />
+      <AppTextarea
+        label="Fill in data fields"
+        @input="onHandleDataFakeDataItemBody($event)"
+      />
+      <button @click="generateFakeDataItem()">Generate fake data</button>
     </form>
   </div>
 </template>
@@ -38,21 +42,37 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Getter, State, Action } from 'vuex-class'
 import AppInput from './AppInput.vue'
+import AppTextarea from './AppTextarea.vue'
 import { jsonValidator } from '../utilities/validators.js'
-@Component({components: {AppInput}})
+@Component({components: {AppInput, AppTextarea}})
 export default class AppForm extends Vue {
   @Prop() private msg!: string;
   fakeDataItemType: string = "JSON"
   fakeDataItemRecurrences: number = 1
-  fakeDataItemBody: string = ""
+  fakeDataItemSchema: string = ""
   isDataItemBodyValid: boolean = true
   
   
   @State('fakeDataItems') fakeDataItems: any
   @Action('addFakeDataItemType') addFakeDataItemType: any
   @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
+  @Action('setFakeDataItemSchema') setFakeDataItemSchema: any
+  @Action('setFakeDataItemBody') setFakeDataItemBody: any
+  @Action('generateFakeDataItem') generateFakeDataItem: any
+  
+
+  onHandleFakeDataItemBody(body: string): any {
+    console.log("body", body)
+    this.setFakeDataItemBody(body)
+  }
+ 
+  onHandleFakeDataItemSchema(schema: string): any{
+    this.setFakeDataItemSchema(schema)
+  }
 
   @Getter('formatTypeTags') formatTypeTags: any
+
+
   AddDataItemType(event: {target: HTMLInputElement}) {
     this.addFakeDataItemType({text: event.target.value, selected: true})
   }
@@ -61,8 +81,16 @@ export default class AppForm extends Vue {
 
 
   validateFakeDataItemBody(){
-    console.log(JSON.parse(this.fakeDataItemBody))
+    console.log(JSON.parse(this.fakeDataItemSchema))
   }
+
+
+
+  onHandleSchema(schema: string) {
+    console.log('schema', schema)
+  }
+
+ 
   
  
 }
