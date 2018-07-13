@@ -7,12 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    fakeDataItem: new FakeDataItem(
-      new FakeDataItemType("JSON", true),
-      1,
-      {},
-      {}
-    ),
+    fakeDataItem: new FakeDataItem(new FakeDataItemType("JSON", true), 1),
     fakeDataItems: Array<FakeDataItem>()
   },
   mutations: {

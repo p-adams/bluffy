@@ -7,8 +7,8 @@ export default class FakeDataItem {
   constructor(
     type: FakeDataItemType,
     recurrences: number,
-    schema: object,
-    body: object
+    schema: object = {},
+    body: object = {}
   ) {
     this._types.push(type);
     this._recurrences = recurrences;
