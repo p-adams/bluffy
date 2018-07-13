@@ -13,7 +13,7 @@ export default new Vuex.Store({
       {},
       {}
     ),
-    fakeDataItems: <any>[]
+    fakeDataItems: Array<FakeDataItem>()
   },
   mutations: {
     addFakeDataItemType(state, type: FakeDataItemType) {
