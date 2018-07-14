@@ -14,8 +14,11 @@ export default new Vuex.Store({
     addFakeDataItem(state) {
       state.fakeDataItems.push(state.fakeDataItem);
     },
-    addFakeDataItemType(state, type: FakeDataItemType) {
-      state.fakeDataItem.types.push(type);
+    addFakeDataItemType(state, { name, selected }: FakeDataItemType) {
+      state.fakeDataItem.types.push(new FakeDataItemType(name, selected));
+    },
+    removeFakeDataItemType(state, tag: FakeDataItemType) {
+      state.fakeDataItem.unselectType(tag);
     },
     setFakeDataItemRecurrences(state, recurrences: number) {
       state.fakeDataItem.recurrences = recurrences;
@@ -28,8 +31,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    addFakeDataItemType({ commit }, type: string) {
-      commit("addFakeDataItemType", type);
+    addFakeDataItemType({ commit }, { name, selected }) {
+      commit("addFakeDataItemType", { name, selected });
+    },
+    generateFakeDataItem({ commit }) {
+      commit("addFakeDataItem");
+    },
+    removeFakeDataItemType({ commit }, tag) {
+      commit("removeFakeDataItemType", tag);
     },
     setFakeDataItemRecurrences({ commit }, recurrences: number) {
       commit("setFakeDataItemRecurrences", recurrences);
@@ -39,9 +48,6 @@ export default new Vuex.Store({
     },
     setFakeDataItemBody({ commit }, body: object) {
       commit("setFakeDataItemBody", body);
-    },
-    generateFakeDataItem({ commit }) {
-      commit("addFakeDataItem");
     }
   },
   getters: {

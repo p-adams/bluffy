@@ -1,40 +1,69 @@
 <template>
   <div>
-    <div>{{ msg }}</div>
-    <div>input: {{ fakeDataItemType }}</div>
-    <div>
-      Format type tags:
-      <ul>
-        <li
-          v-for="(tag, key) in formatTypeTags"
-          :key="key"
-          >
-          <el-tag>{{ tag._name }}</el-tag>
-        </li>
-      </ul>
-    </div>
-    <form>
-      <span>
-      <el-input
-        v-model="fakeDataItemType"
-        placeholder="Add type. For example: JSON, XML, or YAML"
-      />
-      <el-button @click="onHandleAddDataItemType()">Add type</el-button>
-      </span>
-      <el-input-number
-        v-model="fakeDataItemRecurrences"
-        :min="1"
-      />
-      <el-input
-        type="textarea"
-        @change="onHandleFakeDataItemSchema($event)"
-      />
-      <el-input
-        type="textarea"
-        @change="onHandleDataFakeDataItemBody($event)"
-      />
-      <el-button @click="generateFakeDataItem()">Generate fake data</el-button>
-    </form>
+    <el-row :gutter="20">
+      <el-col :span="2"></el-col>
+      <el-col :span="20">
+        <div>
+        Format type tags:
+        <ul>
+          <li
+            v-for="(tag, key) in formatTypeTags"
+            :key="key"
+            >
+            
+            <el-tag
+              v-if="tag._selected"
+              @close="onHandleRemoveFormatTypeTag(tag)"
+              closable
+            >{{ tag._name }}</el-tag>
+          </li>
+        </ul>
+      </div>
+      <el-form ref="form">
+        <el-form-item label="Data type">
+          <el-col>
+            <el-input
+              v-model="fakeDataItemType"
+              placeholder="Add type and press enter. For example: JSON, XML, or YAML"
+              @keyup.enter.native="onHandleAddDataItemType()"
+            />
+          </el-col>
+         
+        </el-form-item>
+        <el-form-item label="Data recurrences">
+          <el-col>
+            <el-input-number
+              v-model="fakeDataItemRecurrences"
+              :min="1"
+            />
+          </el-col>
+        </el-form-item>
+        
+        <el-form-item label="Data schema">
+          <el-col>
+            <el-input
+              type="textarea"
+              @change="onHandleFakeDataItemSchema($event)"
+            />
+          </el-col>
+        </el-form-item>
+        <el-form-item label="Data fields">
+          <el-col>
+            <el-input
+              type="textarea"
+              @change="onHandleDataFakeDataItemBody($event)"
+            />
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col>
+            <el-button @click="generateFakeDataItem()">Generate fake data</el-button>
+          </el-col>
+        </el-form-item>
+      </el-form>
+    </el-col>
+    <el-col></el-col>
+    </el-row>
   </div>
 </template>
 
@@ -43,6 +72,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Getter, State, Action } from 'vuex-class'
 
 import { jsonValidator } from '../utilities/validators.js'
+import FakeDataItem from '@/classes/FakeDataItem.js';
+import FakeDataItemType from '@/classes/FakeDataItemType.js';
 @Component
 export default class AppForm extends Vue {
   @Prop() private msg!: string;
@@ -54,11 +85,12 @@ export default class AppForm extends Vue {
   
   @State('fakeDataItems') fakeDataItems: any
   @Action('addFakeDataItemType') addFakeDataItemType: any
+  @Action('removeFakeDataItemType') removeFakeDataItemType: any
   @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
   @Action('setFakeDataItemSchema') setFakeDataItemSchema: any
   @Action('setFakeDataItemBody') setFakeDataItemBody: any
   @Action('generateFakeDataItem') generateFakeDataItem: any
-  
+  @Getter('formatTypeTags') formatTypeTags: any
 
   onHandleFakeDataItemBody(body: string): any {
     console.log("body", body)
@@ -69,11 +101,16 @@ export default class AppForm extends Vue {
     this.setFakeDataItemSchema(schema)
   }
 
-  @Getter('formatTypeTags') formatTypeTags: any
 
 
+  onHandleRemoveFormatTypeTag (tag: FakeDataItemType) {
+    console.log(tag.name)
+    this.removeFakeDataItemType(tag)
+
+  }
   onHandleAddDataItemType() {
-    this.addFakeDataItemType({_name: this.fakeDataItemType, _selected: true})
+    this.addFakeDataItemType({name: this.fakeDataItemType, selected: true})
+    this.fakeDataItemType = ""
   }
   
   
@@ -113,5 +150,9 @@ a {
 }
 .tagBg {
   background: red;
+}
+
+.el-col {
+  padding: 10px;
 }
 </style>

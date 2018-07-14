@@ -15,6 +15,7 @@ export default class FakeDataItemType {
     this._name = typeName;
   }
   set selected(selected: boolean) {
+    console.log("setting:", selected);
     this._selected = selected;
   }
 }

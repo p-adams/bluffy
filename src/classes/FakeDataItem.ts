@@ -35,12 +35,8 @@ export default class FakeDataItem {
     this._types = types;
   }
 
-  updateTypes(updatedType: FakeDataItemType): FakeDataItemType[] {
-    let updatedTypeIndex: any = this.types.find(
-      type => type.name === updatedType.name
-    );
-    this._types.splice(updatedTypeIndex, 1, updatedType);
-    return this._types;
+  unselectType(type: FakeDataItemType) {
+    type.selected = false;
   }
 
   set recurrences(recurrences: number) {
