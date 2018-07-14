@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { saveAs } from "file-saver";
 import FakeDataItem from "@/classes/FakeDataItem";
 import FakeDataItemType from "@/classes/FakeDataItemType";
 
@@ -32,10 +33,14 @@ export default new Vuex.Store({
       commit("addFakeDataItemType", { name, selected });
     },
     generateFakeDataItem({ state, commit }) {
-      state.fakeDataItem.types = state.fakeDataItem.types.filter(
+      /* state.fakeDataItem.types = state.fakeDataItem.types.filter(
         type => type.selected
       );
-      state.fakeDataItems.push(state.fakeDataItem);
+      state.fakeDataItems.push(state.fakeDataItem); */
+      const file = new File(["meow"], "meow.txt", {
+        type: "text/plain;charset=utf-8"
+      });
+      saveAs(file);
       // save to file using file-saver module
     },
     removeFakeDataItemType({ commit }, tag) {
