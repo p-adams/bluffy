@@ -22,9 +22,8 @@ describe("FakeDataItem class", () => {
       {},
       {}
     );
-    const aFakeDataItemWithUpdatedSelectedField = aFakeDataItem.updateTypes(
-      new FakeDataItemType("JSON", !aFakeDataItem.types[0].selected)
-    );
-    expect(aFakeDataItemWithUpdatedSelectedField[0].selected).toEqual(true);
+    aFakeDataItem.types[0].selected = true;
+    aFakeDataItem.unselectType(aFakeDataItem.types[0]);
+    expect(aFakeDataItem.types[0].selected).toEqual(false);
   });
 });
