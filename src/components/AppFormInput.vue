@@ -9,31 +9,31 @@
           v-for="(tag, key) in formatTypeTags"
           :key="key"
           >
-          <span class="tagBg">{{ tag.text }}</span>
+          <el-tag>{{ tag._name }}</el-tag>
         </li>
       </ul>
     </div>
     <form>
-      <AppInput
-        label="Data format type"
+      <span>
+      <el-input
         v-model="fakeDataItemType"
-        @keyup.enter="AddDataItemType($event)"
+        placeholder="Add type. For example: JSON, XML, or YAML"
       />
-      <AppInput
-        label="Data recurrences"
+      <el-button @click="onHandleAddDataItemType()">Add type</el-button>
+      </span>
+      <el-input-number
         v-model="fakeDataItemRecurrences"
-        @blur="setFakeDataItemRecurrences($event)"
-        type="number"
+        :min="1"
       />
-      <AppTextarea
-        label="Define your data schema"
-        @input="onHandleFakeDataItemSchema($event)"
+      <el-input
+        type="textarea"
+        @change="onHandleFakeDataItemSchema($event)"
       />
-      <AppTextarea
-        label="Fill in data fields"
-        @input="onHandleDataFakeDataItemBody($event)"
+      <el-input
+        type="textarea"
+        @change="onHandleDataFakeDataItemBody($event)"
       />
-      <button @click="generateFakeDataItem()">Generate fake data</button>
+      <el-button @click="generateFakeDataItem()">Generate fake data</el-button>
     </form>
   </div>
 </template>
@@ -41,13 +41,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Getter, State, Action } from 'vuex-class'
-import AppInput from './AppInput.vue'
-import AppTextarea from './AppTextarea.vue'
+
 import { jsonValidator } from '../utilities/validators.js'
-@Component({components: {AppInput, AppTextarea}})
+@Component
 export default class AppForm extends Vue {
   @Prop() private msg!: string;
-  fakeDataItemType: string = "JSON"
+  fakeDataItemType: string = ""
   fakeDataItemRecurrences: number = 1
   fakeDataItemSchema: string = ""
   isDataItemBodyValid: boolean = true
@@ -73,8 +72,8 @@ export default class AppForm extends Vue {
   @Getter('formatTypeTags') formatTypeTags: any
 
 
-  AddDataItemType(event: {target: HTMLInputElement}) {
-    this.addFakeDataItemType({text: event.target.value, selected: true})
+  onHandleAddDataItemType() {
+    this.addFakeDataItemType({_name: this.fakeDataItemType, _selected: true})
   }
   
   

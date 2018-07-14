@@ -11,6 +11,9 @@ export default new Vuex.Store({
     fakeDataItems: Array<FakeDataItem>()
   },
   mutations: {
+    addFakeDataItem(state) {
+      state.fakeDataItems.push(state.fakeDataItem);
+    },
     addFakeDataItemType(state, type: FakeDataItemType) {
       state.fakeDataItem.types.push(type);
     },
@@ -22,9 +25,6 @@ export default new Vuex.Store({
     },
     setFakeDataItemBody(state, body: object) {
       state.fakeDataItem.body = body;
-    },
-    addFakeDataItem(state) {
-      state.fakeDataItems.push(state.fakeDataItem);
     }
   },
   actions: {
