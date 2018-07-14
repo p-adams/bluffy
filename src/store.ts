@@ -12,6 +12,9 @@ export default new Vuex.Store({
   },
   mutations: {
     addFakeDataItem(state) {
+      state.fakeDataItem.types = state.fakeDataItem.types.filter(
+        type => type.selected
+      );
       state.fakeDataItems.push(state.fakeDataItem);
     },
     addFakeDataItemType(state, { name, selected }: FakeDataItemType) {

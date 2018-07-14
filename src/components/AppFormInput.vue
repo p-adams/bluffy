@@ -10,7 +10,7 @@
             v-for="(tag, key) in formatTypeTags"
             :key="key"
             >
-            
+            {{tag}}
             <el-tag
               v-if="tag._selected"
               @close="onHandleRemoveFormatTypeTag(tag)"
@@ -34,6 +34,7 @@
           <el-col>
             <el-input-number
               v-model="fakeDataItemRecurrences"
+              @change="onHandleFakeDataItemRecurrences()"
               :min="1"
             />
           </el-col>
@@ -43,7 +44,8 @@
           <el-col>
             <el-input
               type="textarea"
-              @change="onHandleFakeDataItemSchema($event)"
+              v-model="fakeDataItemSchema"
+              @blur="onHandleFakeDataItemSchema()"
             />
           </el-col>
         </el-form-item>
@@ -51,13 +53,15 @@
           <el-col>
             <el-input
               type="textarea"
-              @change="onHandleDataFakeDataItemBody($event)"
+              v-model="fakeDataItemBody"
+              @change="onHandleFakeDataItemBody()"
             />
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col>
             <el-button @click="generateFakeDataItem()">Generate fake data</el-button>
+            {{ fakeDataItems }}
           </el-col>
         </el-form-item>
       </el-form>
@@ -80,8 +84,8 @@ export default class AppForm extends Vue {
   fakeDataItemType: string = ""
   fakeDataItemRecurrences: number = 1
   fakeDataItemSchema: string = ""
+  fakeDataItemBody: string = ""
   isDataItemBodyValid: boolean = true
-  
   
   @State('fakeDataItems') fakeDataItems: any
   @Action('addFakeDataItemType') addFakeDataItemType: any
@@ -92,13 +96,16 @@ export default class AppForm extends Vue {
   @Action('generateFakeDataItem') generateFakeDataItem: any
   @Getter('formatTypeTags') formatTypeTags: any
 
-  onHandleFakeDataItemBody(body: string): any {
-    console.log("body", body)
-    this.setFakeDataItemBody(body)
+  onHandleFakeDataItemBody() {
+    this.setFakeDataItemBody(this.fakeDataItemBody)
   }
  
-  onHandleFakeDataItemSchema(schema: string): any{
-    this.setFakeDataItemSchema(schema)
+  onHandleFakeDataItemSchema() {
+    
+    this.setFakeDataItemSchema(this.fakeDataItemSchema)
+  }
+  onHandleFakeDataItemRecurrences(recurrences: HTMLInputElement) {
+    this.setFakeDataItemRecurrences(recurrences)
   }
 
 
@@ -113,21 +120,11 @@ export default class AppForm extends Vue {
     this.fakeDataItemType = ""
   }
   
-  
-
 
   validateFakeDataItemBody(){
     console.log(JSON.parse(this.fakeDataItemSchema))
+    
   }
-
-
-
-  onHandleSchema(schema: string) {
-    console.log('schema', schema)
-  }
-
- 
-  
  
 }
 </script>
