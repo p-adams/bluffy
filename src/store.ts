@@ -11,12 +11,6 @@ export default new Vuex.Store({
     fakeDataItems: Array<FakeDataItem>()
   },
   mutations: {
-    addFakeDataItem(state) {
-      state.fakeDataItem.types = state.fakeDataItem.types.filter(
-        type => type.selected
-      );
-      state.fakeDataItems.push(state.fakeDataItem);
-    },
     addFakeDataItemType(state, { name, selected }: FakeDataItemType) {
       state.fakeDataItem.types.push(new FakeDataItemType(name, selected));
     },
@@ -37,8 +31,12 @@ export default new Vuex.Store({
     addFakeDataItemType({ commit }, { name, selected }) {
       commit("addFakeDataItemType", { name, selected });
     },
-    generateFakeDataItem({ commit }) {
-      commit("addFakeDataItem");
+    generateFakeDataItem({ state, commit }) {
+      state.fakeDataItem.types = state.fakeDataItem.types.filter(
+        type => type.selected
+      );
+      state.fakeDataItems.push(state.fakeDataItem);
+      // save to file using file-saver module
     },
     removeFakeDataItemType({ commit }, tag) {
       commit("removeFakeDataItemType", tag);

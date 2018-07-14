@@ -61,7 +61,6 @@
         <el-form-item>
           <el-col>
             <el-button @click="generateFakeDataItem()">Generate fake data</el-button>
-            {{ fakeDataItems }}
           </el-col>
         </el-form-item>
       </el-form>
