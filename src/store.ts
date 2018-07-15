@@ -1,22 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { saveAs } from "file-saver";
-import FakeDataItem from "@/classes/FakeDataItem";
-import FakeDataItemType from "@/classes/FakeDataItemType";
+import { DataTypes, FakeDataItem } from "@/classes/FakeDataItem";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    fakeDataItem: new FakeDataItem(new FakeDataItemType("JSON", true), 1),
-    fakeDataItems: Array<FakeDataItem>()
+    fakeDataItem: new FakeDataItem([DataTypes.JSON], 1)
   },
   mutations: {
-    addFakeDataItemType(state, { name, selected }: FakeDataItemType) {
-      state.fakeDataItem.types.push(new FakeDataItemType(name, selected));
-    },
-    removeFakeDataItemType(state, tag: FakeDataItemType) {
-      state.fakeDataItem.unselectType(tag);
+    updateFakeDataItemTypes(state, types: DataTypes[]) {
+      state.fakeDataItem.types = types;
     },
     setFakeDataItemRecurrences(state, recurrences: number) {
       state.fakeDataItem.recurrences = recurrences;
@@ -29,22 +24,19 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    addFakeDataItemType({ commit }, { name, selected }) {
-      commit("addFakeDataItemType", { name, selected });
+    updateFakeDataItemTypes({ commit }, types: DataTypes[]) {
+      commit("addFakeDataItemTypes", types);
     },
     generateFakeDataItem({ state, commit }) {
-      /* state.fakeDataItem.types = state.fakeDataItem.types.filter(
-        type => type.selected
+      const file = new File(
+        [JSON.stringify({ foo: "bar" }, null, 2)],
+        "meow.json",
+        {
+          type: "application/json;charset=utf-8"
+        }
       );
-      state.fakeDataItems.push(state.fakeDataItem); */
-      const file = new File([JSON.stringify({ foo: "bar" })], "meow.json", {
-        type: "application/json;charset=utf-8"
-      });
       saveAs(file);
       // save to file using file-saver module
-    },
-    removeFakeDataItemType({ commit }, tag) {
-      commit("removeFakeDataItemType", tag);
     },
     setFakeDataItemRecurrences({ commit }, recurrences: number) {
       commit("setFakeDataItemRecurrences", recurrences);
@@ -55,8 +47,5 @@ export default new Vuex.Store({
     setFakeDataItemBody({ commit }, body: object) {
       commit("setFakeDataItemBody", body);
     }
-  },
-  getters: {
-    formatTypeTags: state => state.fakeDataItem.types
   }
 });

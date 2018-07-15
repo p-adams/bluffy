@@ -1,29 +1,24 @@
-import FakeDataItem from "@/classes/FakeDataItem";
-import FakeDataItemType from "@/classes/FakeDataItemType";
+import { DataTypes, FakeDataItem } from "@/classes/FakeDataItem";
 
 describe("FakeDataItem class", () => {
   it("Correctly creates an instance of FakeDataItem class", () => {
-    const aFakeDataItem = new FakeDataItem(
-      new FakeDataItemType("XML", false),
-      1,
-      {},
-      {}
-    );
-    expect(aFakeDataItem.types[0].name).toEqual("XML");
-    expect(aFakeDataItem.types[0].selected).toEqual(false);
+    const aFakeDataItem = new FakeDataItem([DataTypes.JSON], 1, {}, {});
+    expect(aFakeDataItem.types[0]).toEqual("JSON");
     expect(aFakeDataItem.recurrences).toEqual(1);
     expect(aFakeDataItem.schema).toEqual({});
     expect(aFakeDataItem.body).toEqual({});
   });
-  it("Correctly updates 'selected' property of FakeDataItemType in 'types' variable", () => {
+  it("Correctly adds two data types as its types", () => {
     const aFakeDataItem = new FakeDataItem(
-      new FakeDataItemType("JSON", false),
+      [DataTypes.JSON, DataTypes.XML],
       1,
       {},
       {}
     );
-    aFakeDataItem.types[0].selected = true;
-    aFakeDataItem.unselectType(aFakeDataItem.types[0]);
-    expect(aFakeDataItem.types[0].selected).toEqual(false);
+    expect(aFakeDataItem.types[0]).toEqual("JSON");
+    expect(aFakeDataItem.types[1]).toEqual("XML");
+    expect(aFakeDataItem.recurrences).toEqual(1);
+    expect(aFakeDataItem.schema).toEqual({});
+    expect(aFakeDataItem.body).toEqual({});
   });
 });

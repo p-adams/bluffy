@@ -1,21 +1,24 @@
-import FakeDataItemType from "./FakeDataItemType";
-export default class FakeDataItem {
-  private _types: FakeDataItemType[] = [];
+export enum DataTypes {
+  JSON = "JSON",
+  XML = "XML"
+}
+export class FakeDataItem {
+  private _types: DataTypes[] = [];
   private _recurrences: number = 0;
   private _schema: object = {};
   private _body: object = {};
   constructor(
-    type: FakeDataItemType,
+    types: DataTypes[],
     recurrences: number,
     schema: object = {},
     body: object = {}
   ) {
-    this._types.push(type);
+    this._types = types;
     this._recurrences = recurrences;
     this._schema = schema;
     this._body = body;
   }
-  get types(): FakeDataItemType[] {
+  get types(): DataTypes[] {
     return this._types;
   }
 
@@ -31,12 +34,8 @@ export default class FakeDataItem {
     return this._body;
   }
 
-  set types(types: FakeDataItemType[]) {
+  set types(types: DataTypes[]) {
     this._types = types;
-  }
-
-  unselectType(type: FakeDataItemType) {
-    type.selected = false;
   }
 
   set recurrences(recurrences: number) {
