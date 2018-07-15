@@ -37,8 +37,8 @@ export default new Vuex.Store({
         type => type.selected
       );
       state.fakeDataItems.push(state.fakeDataItem); */
-      const file = new File(["meow"], "meow.txt", {
-        type: "text/plain;charset=utf-8"
+      const file = new File([JSON.stringify({ foo: "bar" })], "meow.json", {
+        type: "application/json;charset=utf-8"
       });
       saveAs(file);
       // save to file using file-saver module

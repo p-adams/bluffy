@@ -10,7 +10,6 @@
             v-for="(tag, key) in formatTypeTags"
             :key="key"
             >
-            {{tag}}
             <el-tag
               v-if="tag._selected"
               @close="onHandleRemoveFormatTypeTag(tag)"
@@ -30,15 +29,7 @@
           </el-col>
          
         </el-form-item>
-        <el-form-item label="Data recurrences">
-          <el-col>
-            <el-input-number
-              v-model="fakeDataItemRecurrences"
-              @change="onHandleFakeDataItemRecurrences()"
-              :min="1"
-            />
-          </el-col>
-        </el-form-item>
+       
         
         <el-form-item label="Data schema">
           <el-col>
@@ -57,6 +48,19 @@
               @change="onHandleFakeDataItemBody()"
             />
           </el-col>
+        </el-form-item>
+        <el-form-item label="Data recurrences">
+          <el-col>
+            <el-input-number
+              v-model="fakeDataItemRecurrences"
+              @change="onHandleFakeDataItemRecurrences()"
+              :min="1"
+            />
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-input placeholder="file name"/>
+          <el-input placeholder="file extension"/>
         </el-form-item>
         <el-form-item>
           <el-col>
