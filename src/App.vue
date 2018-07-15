@@ -7,7 +7,8 @@
       <h5>A Web and (coming soon) CLI app for generating fake data</h5>
       <div id="nav">
         <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
+        <router-link to="/about">About</router-link> | 
+        <router-link to="/cli">CLI</router-link>
       </div>
     </el-header>
     <el-main class="main">
