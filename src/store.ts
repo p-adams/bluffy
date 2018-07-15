@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    fakeDataItem: new FakeDataItem([DataTypes.JSON], 1)
+    fakeDataItem: new FakeDataItem([], 1)
   },
   mutations: {
     updateFakeDataItemTypes(state, types: DataTypes[]) {
@@ -25,7 +25,7 @@ export default new Vuex.Store({
   },
   actions: {
     updateFakeDataItemTypes({ commit }, types: DataTypes[]) {
-      commit("addFakeDataItemTypes", types);
+      commit("updateFakeDataItemTypes", types);
     },
     generateFakeDataItem({ state, commit }) {
       const file = new File(

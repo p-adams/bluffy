@@ -5,7 +5,6 @@
         <el-card>
       <el-form ref="form">
         <el-form-item label="Data type">
-         {{ selectedTypes }}
           <el-select
             v-model="selectedTypes"
             @change="onHandleFakeDataItemTypes"
@@ -78,18 +77,20 @@ import { jsonValidator } from '../utilities/validators'
 import { DataTypes, FakeDataItem } from '@/classes/FakeDataItem';
 @Component
 export default class AppForm extends Vue {
-  @Prop() private msg!: string;
-  
-  fakeDataItemRecurrences: number = 1
-  fakeDataItemSchema: string = ""
-  fakeDataItemBody: string = ""
-  isDataItemBodyValid: boolean = true
- 
-  selectedTypes: DataTypes[] = []
+  /**
+   * Local data
+   */
 
-  fakeDataItemTypes: object = [
-    {label: DataTypes.JSON, value: DataTypes.JSON},
-    {label: DataTypes.XML, value: DataTypes.XML}
+  private fakeDataItemRecurrences: number = 1
+  private fakeDataItemSchema: string = ""
+  private fakeDataItemBody: string = ""
+  private isDataItemBodyValid: boolean = true
+ 
+  private selectedTypes: DataTypes[] = []
+
+  private fakeDataItemTypes: object = [
+      {label: DataTypes.JSON, value: DataTypes.JSON},
+      {label: DataTypes.XML, value: DataTypes.XML}
     ]
 
 
