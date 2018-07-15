@@ -21,13 +21,7 @@
           </el-select>
           
         </el-form-item>
-        <el-form-item label="Data Recurrences">
-          <el-input-number
-              v-model="fakeDataItemRecurrences"
-              @change="onHandleFakeDataItemRecurrences()"
-              :min="1"
-          />
-        </el-form-item>
+     
         
         <el-form-item
           label="Data schema"
@@ -42,18 +36,46 @@
           </el-col>
         </el-form-item>
         <el-form-item label="Data fields">
-          <el-col>
-            <el-input
-              type="textarea"
-              v-model="fakeDataItemBody"
-              @change="onHandleFakeDataItemBody()"
-            />
-          </el-col>
+          <el-tabs type="border-card">
+            <el-tab-pane label="JSON">
+              <el-input
+                type="textarea"
+                v-model="fakeDataItemJSONBody"
+                @blur="onHandleFakeDataItemBody()"
+                :placeholder="fakeDataItemJSONBodyPlaceholder"
+              />
+             
+              <el-button @click="clearJSONData()">Clear data</el-button>
+              <el-button
+                @click="formatJSONData()"
+                :disabled="!fakeDataItemJSONBody"
+              >Format data</el-button>
+            </el-tab-pane>
+            <el-tab-pane label="XML">
+              <el-input
+                type="textarea"
+                v-model="fakeDataItemXMLBody"
+                @blur="onHandleFakeDataItemBody()"
+                :placeholder="fakeDataItemXMLPlaceholder"
+              />
+              <el-button @click="clearXMLData()">Clear data</el-button>
+              <el-button
+                @click="formatXMLData()"
+                :disabled="!fakeDataItemXMLBody"
+              >Format data</el-button>
+            </el-tab-pane>
+          </el-tabs>
+        </el-form-item>
+        <el-form-item label="Data Recurrences">
+          <el-input-number
+              v-model="fakeDataItemRecurrences"
+              @change="onHandleFakeDataItemRecurrences()"
+              :min="1"
+          />
         </el-form-item>
        
-        <el-form-item>
-          <el-input placeholder="file name"/>
-          <el-input placeholder="file extension"/>
+        <el-form-item label="File name">
+          <el-input placeholder="enter file name"/>
         </el-form-item>
         <el-form-item>
           <el-col>
@@ -75,6 +97,7 @@ import { Getter, State, Action } from 'vuex-class'
 import { jsonValidator } from '../utilities/validators'
 
 import { DataTypes, FakeDataItem } from '@/classes/FakeDataItem';
+import { stringify } from 'querystring';
 @Component
 export default class AppForm extends Vue {
   /**
@@ -83,8 +106,11 @@ export default class AppForm extends Vue {
 
   private fakeDataItemRecurrences: number = 1
   private fakeDataItemSchema: string = ""
-  private fakeDataItemBody: string = ""
-  private isDataItemBodyValid: boolean = true
+  private fakeDataItemJSONBody: string = ""
+  private fakeDataItemJSONBodyPlaceholder: string = `Example => { "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`
+  private fakeDataItemXMLBody: string = ""
+  private fakeDataItemXMLPlaceholder: string = `Example => <book><title>The Hobbit</title></book>`
+  private isDataItemJSONBodyValid: boolean = true
  
   private selectedTypes: DataTypes[] = []
 
@@ -116,7 +142,7 @@ export default class AppForm extends Vue {
     this.setFakeDataItemRecurrences(recurrences)
   }
   onHandleFakeDataItemBody() {
-    this.setFakeDataItemBody(this.fakeDataItemBody)
+    this.setFakeDataItemBody({json: this.fakeDataItemJSONBody, xml: this.fakeDataItemXMLBody})
   }
  
   onHandleFakeDataItemSchema() {
@@ -128,8 +154,19 @@ export default class AppForm extends Vue {
    * Utility methods
    */
   
+  formatJSONData() {
+    this.fakeDataItemJSONBody = JSON.stringify(JSON.parse(this.fakeDataItemJSONBody), null, 2)
+  }
 
-  validateFakeDataItemBody(){
+  clearJSONData() {
+    this.fakeDataItemJSONBody = ""
+  }
+
+  formatXMLData() {}
+
+  clearXMLData() {}
+
+  fieldsConformToSchema(){
     console.log(JSON.parse(this.fakeDataItemSchema))
     
   }
