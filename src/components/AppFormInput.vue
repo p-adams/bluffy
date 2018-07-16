@@ -4,23 +4,7 @@
       <el-col :span="12" :offset="6">
         <el-card>
       <el-form ref="form">
-        <el-form-item label="Data type">
-          <el-select
-            v-model="selectedTypes"
-            @change="onHandleFakeDataItemTypes"
-            multiple
-            placeholder="Select"
-          >
-            <el-option
-              v-for="(type, index) in fakeDataItemTypes"
-              :key="index"
-              :label="type.label"
-              :value="type.value"
-            >
-            </el-option>
-          </el-select>
-          
-        </el-form-item>
+        
      
         
         <el-form-item
@@ -40,7 +24,7 @@
             <el-tab-pane label="JSON">
               <el-input
                 type="textarea"
-                v-model="fakeDataItemJSONBody"
+                v-model="fakeDataItemJSONBody.json"
                 @blur="onHandleFakeDataItemBody()"
                 :placeholder="fakeDataItemJSONBodyPlaceholder"
               />
@@ -49,19 +33,6 @@
               <el-button
                 @click="formatJSONData()"
                 :disabled="!fakeDataItemJSONBody"
-              >Format data</el-button>
-            </el-tab-pane>
-            <el-tab-pane label="XML">
-              <el-input
-                type="textarea"
-                v-model="fakeDataItemXMLBody"
-                @blur="onHandleFakeDataItemBody()"
-                :placeholder="fakeDataItemXMLPlaceholder"
-              />
-              <el-button @click="clearXMLData()">Clear data</el-button>
-              <el-button
-                @click="formatXMLData()"
-                :disabled="!fakeDataItemXMLBody"
               >Format data</el-button>
             </el-tab-pane>
           </el-tabs>
@@ -106,19 +77,9 @@ export default class AppForm extends Vue {
 
   private fakeDataItemRecurrences: number = 1
   private fakeDataItemSchema: string = ""
-  private fakeDataItemJSONBody: string = ""
+  private fakeDataItemJSONBody: {json?: string, formatted?: boolean} = {}
   private fakeDataItemJSONBodyPlaceholder: string = `Example => { "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`
-  private fakeDataItemXMLBody: string = ""
-  private fakeDataItemXMLPlaceholder: string = `Example => <book><title>The Hobbit</title></book>`
   private isDataItemJSONBodyValid: boolean = true
- 
-  private selectedTypes: DataTypes[] = []
-
-  private fakeDataItemTypes: object = [
-      {label: DataTypes.JSON, value: DataTypes.JSON},
-      {label: DataTypes.XML, value: DataTypes.XML}
-    ]
-
 
   /**
    * Vuex State, Actions, and Getters
@@ -142,7 +103,7 @@ export default class AppForm extends Vue {
     this.setFakeDataItemRecurrences(recurrences)
   }
   onHandleFakeDataItemBody() {
-    this.setFakeDataItemBody({json: this.fakeDataItemJSONBody, xml: this.fakeDataItemXMLBody})
+    this.setFakeDataItemBody({json: this.fakeDataItemJSONBody})
   }
  
   onHandleFakeDataItemSchema() {
@@ -155,20 +116,12 @@ export default class AppForm extends Vue {
    */
   
   formatJSONData() {
-    this.fakeDataItemJSONBody = JSON.stringify(JSON.parse(this.fakeDataItemJSONBody), null, 2)
+    this.fakeDataItemJSONBody.json = JSON.stringify(JSON.parse(this.fakeDataItemJSONBody.json!), null, 2)
+    this.fakeDataItemJSONBody.formatted = !this.fakeDataItemJSONBody.formatted
   }
 
   clearJSONData() {
-    this.fakeDataItemJSONBody = ""
-  }
-
-  formatXMLData() {}
-
-  clearXMLData() {}
-
-  fieldsConformToSchema(){
-    console.log(JSON.parse(this.fakeDataItemSchema))
-    
+    this.fakeDataItemJSONBody.json = ""
   }
  
 }

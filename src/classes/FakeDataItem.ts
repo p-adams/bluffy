@@ -1,6 +1,5 @@
 export enum DataTypes {
-  JSON = "JSON",
-  XML = "XML"
+  JSON = "JSON"
 }
 export class FakeDataItem {
   private _types: DataTypes[] = [];

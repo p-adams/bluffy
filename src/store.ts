@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { saveAs } from "file-saver";
 import { DataTypes, FakeDataItem } from "@/classes/FakeDataItem";
+import { jsonValidator } from "@/utilities/validators.ts";
 
 Vue.use(Vuex);
 
@@ -28,6 +29,11 @@ export default new Vuex.Store({
       commit("updateFakeDataItemTypes", types);
     },
     generateFakeDataItem({ state, commit }) {
+      const jsonBodyMatchesSchema = jsonValidator(
+        state.fakeDataItem.body,
+        state.fakeDataItem.schema
+      );
+      console.log(jsonBodyMatchesSchema);
       const file = new File(
         [JSON.stringify({ foo: "bar" }, null, 2)],
         "meow.json",
