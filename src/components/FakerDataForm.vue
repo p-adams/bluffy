@@ -3,31 +3,54 @@
     <el-row :gutter="20">
       <el-col :span="12" :offset="6">
         <el-card>
-      <el-form ref="form">
-        
-     
-        
+      <el-form ref="form">   
         <el-form-item
-          label="Data schema"
+          v-if="!schemaCreated"
+          label="Data schema builder (JSON)"
           class="data-schema-input"
         >
           <el-col>
-            <el-input
-              type="textarea"
+            <!-- schema builder -->
+            <codemirror
+              :options="schemaBuilderOptions"
               v-model="fakeDataItemSchema"
-              @blur="onHandleFakeDataItemSchema()"
             />
+            <el-row class="schema-builder-buttons">
+              <el-col>
+                <el-button
+                  @click="onClearSchema()"
+                  :disabled="!fakeDataItemSchema"
+                >Clear</el-button>
+                <el-button
+                  @click="onFormatSchema()"
+                  :disabled="!fakeDataItemSchema"
+                >Format</el-button>
+                <el-button
+                  @click="onHandleFakeDataItemSchema()"
+                  :disabled="!fakeDataItemSchema"
+                >Create</el-button>
+              </el-col>
+            </el-row>
           </el-col>
+         
         </el-form-item>
-        <el-form-item label="Data fields">
+         <el-form-item v-else>
+            <el-button @click="schemaCreated = false">Edit schema</el-button>
+          </el-form-item>
+        <el-form-item
+          label="Data fields"
+          v-if="schemaCreated"
+        >
           <el-tabs type="border-card">
             <el-tab-pane label="JSON">
-              <el-input
+              <!-- <el-input
                 type="textarea"
                 v-model="fakeDataItemJSONBody.json"
                 @blur="onHandleFakeDataItemBody()"
                 :placeholder="fakeDataItemJSONBodyPlaceholder"
-              />
+              /> -->
+              <!-- fields builder -->
+              <codemirror />
              
               <el-button @click="clearJSONData()">Clear data</el-button>
               <el-button
@@ -68,7 +91,10 @@ import { Getter, State, Action } from 'vuex-class'
 import { jsonValidator } from '../utilities/validators'
 
 import { DataTypes, FakeDataItem } from '@/classes/FakeDataItem';
-import { stringify } from 'querystring';
+
+import 'codemirror/mode/javascript/javascript.js'
+// theme css
+import 'codemirror/theme/monokai.css'
 @Component
 export default class AppForm extends Vue {
   /**
@@ -76,16 +102,25 @@ export default class AppForm extends Vue {
    */
 
   private fakeDataItemRecurrences: number = 1
-  private fakeDataItemSchema: string = ""
+  private fakeDataItemSchema: string = `{ "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`
   private fakeDataItemJSONBody: {json?: string, formatted?: boolean} = {}
   private fakeDataItemJSONBodyPlaceholder: string = `Example => { "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`
-  private isDataItemJSONBodyValid: boolean = true
+  private schemaCreated: boolean = false
+  private schemaBuilderOptions: object = {
+    mode: {
+      name: 'javascript',
+      json: true
+    },
+    tabSize: 2,
+    theme: 'monokai',
+    lineNumbers: true,
+    line: true
+  }
 
   /**
    * Vuex State, Actions, and Getters
    */
-  
-  @Action('updateFakeDataItemTypes') updateFakeDataItemTypes: any
+
   @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
   @Action('setFakeDataItemSchema') setFakeDataItemSchema: any
   @Action('setFakeDataItemBody') setFakeDataItemBody: any
@@ -95,9 +130,6 @@ export default class AppForm extends Vue {
    * Form input handlers
    */
 
-  onHandleFakeDataItemTypes(types: DataTypes[]) {
-    this.updateFakeDataItemTypes(types)
-  }
 
   onHandleFakeDataItemRecurrences(recurrences: HTMLInputElement) {
     this.setFakeDataItemRecurrences(recurrences)
@@ -108,16 +140,25 @@ export default class AppForm extends Vue {
  
   onHandleFakeDataItemSchema() {
     this.setFakeDataItemSchema(this.fakeDataItemSchema)
+    this.schemaCreated = true
   }
 
-
   /**
-   * Utility methods
+   * Form action handlers
    */
+
+  onFormatSchema() {
+   
+    this.fakeDataItemSchema = JSON.stringify(JSON.parse(this.fakeDataItemSchema), null, 2)
+  }
+
+  onClearSchema() {
+    this.fakeDataItemSchema = ''
+  }
   
-  formatJSONData() {
+  onFormatJSONData() {
     this.fakeDataItemJSONBody.json = JSON.stringify(JSON.parse(this.fakeDataItemJSONBody.json!), null, 2)
-    this.fakeDataItemJSONBody.formatted = !this.fakeDataItemJSONBody.formatted
+    this.fakeDataItemJSONBody.formatted = true
   }
 
   clearJSONData() {
@@ -129,4 +170,7 @@ export default class AppForm extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.schema-builder-buttons {
+  margin-top: 5px;
+}
 </style>

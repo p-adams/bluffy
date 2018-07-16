@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <AppFormInput msg="AppForm prop"/>
+    <FakerDataForm/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AppFormInput from '@/components/AppFormInput.vue'; // @ is an alias to /src
+import FakerDataForm from '@/components/FakerDataForm.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    AppFormInput,
+    FakerDataForm,
   },
 })
 export default class Home extends Vue {}
