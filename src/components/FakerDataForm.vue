@@ -17,7 +17,7 @@
                   :options="schemaBuilderOptions"
                   v-model="fakeDataItemSchema"
                 />
-                <el-row class="schema-builder-buttons">
+                <el-row class="builder-buttons">
                   <el-col>
                     <el-button
                       @click="onClearSchema()"
@@ -44,38 +44,48 @@
               <el-form-item label="Data fields">
                 <el-tabs type="border-card">
                   <el-tab-pane label="JSON">
-                    <!-- <el-input
-                      type="textarea"
+                  <!-- fields builder -->
+                    <codemirror
                       v-model="fakeDataItemJSONBody.json"
-                      @blur="onHandleFakeDataItemBody()"
-                      :placeholder="fakeDataItemJSONBodyPlaceholder"
-                    /> -->
-                    <!-- fields builder -->
-                    <codemirror />
-                  
-                    <el-button @click="clearJSONData()">Clear data</el-button>
-                    <el-button
-                      @click="formatJSONData()"
-                      :disabled="!fakeDataItemJSONBody"
-                    >Format data</el-button>
+                      :options="fieldsBuilderOptions"
+                    />
+                    <el-row class="builder-buttons">
+                      <el-button @click="onClearJSONData()">Clear data</el-button>
+                      <el-button
+                        @click="onFormatJSONData()"
+                        :disabled="!fakeDataItemJSONBody"
+                      >Format data</el-button>
+                      <el-button @click="onHandleFakeDataItemBody()"
+                      >Create</el-button>
+                    </el-row>
                   </el-tab-pane>
                 </el-tabs>
               </el-form-item>
-              <el-form-item label="Data Recurrences">
-                <el-input-number
-                    v-model="fakeDataItemRecurrences"
-                    @change="onHandleFakeDataItemRecurrences()"
-                    :min="1"
-                />
-              </el-form-item>
-            
-              <el-form-item label="File name">
-                <el-input placeholder="enter file name"/>
-              </el-form-item>
-              <el-form-item>
-                <el-col>
-                  <el-button @click="generateFakeDataItem()">Generate fake data</el-button>
-                </el-col>
+              <el-form-item class="footer-inputs">
+                <el-form-item label="Data Recurrences">
+                  <el-input-number
+                      v-model="fakeDataItemRecurrences"
+                      @change="onHandleFakeDataItemRecurrences()"
+                      :min="1"
+                  />
+                </el-form-item>
+                <el-form-item label="File name">
+                  <el-input
+                    v-model="fakeDataItemFilename"
+                    placeholder="Enter filename; For example, cats.json"
+                    required
+                    />
+                </el-form-item>
+                <el-form-item>
+                  <el-row class="builder-buttons">
+                    <el-col>
+                      <el-button
+                      @click="generateFakeDataItem(fakeDataItemFilename)"
+                      :disabled="!fakeDataFieldsCreated || !fakeDataItemFilename"
+                    >Generate fake data</el-button>
+                    </el-col>
+                  </el-row>
+                </el-form-item>
               </el-form-item>
             </el-form-item>
           </el-form>
@@ -92,7 +102,7 @@ import { Getter, State, Action } from 'vuex-class'
 
 import { jsonValidator } from '../utilities/validators'
 
-import { DataTypes, FakeDataItem } from '@/classes/FakeDataItem';
+import { DataBody, DataTypes, FakeDataItem } from '@/classes/FakeDataItem';
 
 import 'codemirror/mode/javascript/javascript.js'
 // theme css
@@ -104,11 +114,22 @@ export default class AppForm extends Vue {
    */
 
   private fakeDataItemRecurrences: number = 1
-  private fakeDataItemSchema: string = `{ "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`
-  private fakeDataItemJSONBody: {json?: string, formatted?: boolean} = {}
-  private fakeDataItemJSONBodyPlaceholder: string = `Example => { "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`
+  private fakeDataItemSchema: string = `{ "cities": array }`
+  private fakeDataItemJSONBody: DataBody = {json: `{ "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`, formatted: false}
+  private fakeDataItemFilename: string = ""
   private schemaCreated: boolean = false
+  private fakeDataFieldsCreated: boolean = false
   private schemaBuilderOptions: object = {
+    mode: {
+      name: 'javascript',
+      json: true
+    },
+    tabSize: 2,
+    theme: 'monokai',
+    lineNumbers: true,
+    line: true
+  }
+   private fieldsBuilderOptions: object = {
     mode: {
       name: 'javascript',
       json: true
@@ -128,16 +149,17 @@ export default class AppForm extends Vue {
   @Action('setFakeDataItemBody') setFakeDataItemBody: any
   @Action('generateFakeDataItem') generateFakeDataItem: any
 
-  /**
-   * Form input handlers
-   */
+ /**
+   * Form action handlers
+  */
 
 
   onHandleFakeDataItemRecurrences(recurrences: HTMLInputElement) {
     this.setFakeDataItemRecurrences(recurrences)
   }
   onHandleFakeDataItemBody() {
-    this.setFakeDataItemBody({json: this.fakeDataItemJSONBody})
+    this.setFakeDataItemBody(this.fakeDataItemJSONBody)
+    this.fakeDataFieldsCreated = true
   }
  
   onHandleFakeDataItemSchema() {
@@ -145,9 +167,7 @@ export default class AppForm extends Vue {
     this.schemaCreated = true
   }
 
-  /**
-   * Form action handlers
-   */
+
 
   onFormatSchema() {
    
@@ -159,20 +179,25 @@ export default class AppForm extends Vue {
   }
   
   onFormatJSONData() {
-    this.fakeDataItemJSONBody.json = JSON.stringify(JSON.parse(this.fakeDataItemJSONBody.json!), null, 2)
+    this.fakeDataItemJSONBody.json = JSON.stringify(JSON.parse(this.fakeDataItemJSONBody.json), null, 2)
     this.fakeDataItemJSONBody.formatted = true
   }
 
-  clearJSONData() {
+  onclearJSONData() {
     this.fakeDataItemJSONBody.json = ""
   }
+
+
  
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.schema-builder-buttons {
+.builder-buttons {
   margin-top: 5px;
+}
+.footer-inputs {
+  margin-top: 20px;
 }
 </style>

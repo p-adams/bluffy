@@ -1,16 +1,21 @@
 export enum DataTypes {
   JSON = "JSON"
 }
+
+export interface DataBody {
+  json: string;
+  formatted: boolean;
+}
 export class FakeDataItem {
   private _types: DataTypes[] = [];
   private _recurrences: number = 0;
   private _schema: object = {};
-  private _body: object = {};
+  private _body: DataBody;
   constructor(
     types: DataTypes[],
     recurrences: number,
     schema: object = {},
-    body: object = {}
+    body: DataBody
   ) {
     this._types = types;
     this._recurrences = recurrences;
@@ -29,7 +34,7 @@ export class FakeDataItem {
     return this._schema;
   }
 
-  get body(): object {
+  get body(): DataBody {
     return this._body;
   }
 
@@ -45,7 +50,7 @@ export class FakeDataItem {
     this._schema = schema;
   }
 
-  set body(body: object) {
+  set body(body: DataBody) {
     this._body = body;
   }
 }

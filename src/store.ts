@@ -1,14 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { saveAs } from "file-saver";
-import { DataTypes, FakeDataItem } from "@/classes/FakeDataItem";
+import { DataBody, DataTypes, FakeDataItem } from "@/classes/FakeDataItem";
 import { jsonValidator } from "@/utilities/validators.ts";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    fakeDataItem: new FakeDataItem([], 1)
+    fakeDataItem: new FakeDataItem([], 1, {}, { json: "", formatted: false })
   },
   mutations: {
     updateFakeDataItemTypes(state, types: DataTypes[]) {
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     setFakeDataItemSchema(state, schema: object) {
       state.fakeDataItem.schema = schema;
     },
-    setFakeDataItemBody(state, body: object) {
+    setFakeDataItemBody(state, body: DataBody) {
       state.fakeDataItem.body = body;
     }
   },
@@ -28,20 +28,21 @@ export default new Vuex.Store({
     updateFakeDataItemTypes({ commit }, types: DataTypes[]) {
       commit("updateFakeDataItemTypes", types);
     },
-    generateFakeDataItem({ state, commit }) {
+    generateFakeDataItem({ state, commit }, filename) {
+      console.log(filename);
       const jsonBodyMatchesSchema = jsonValidator(
-        state.fakeDataItem.body,
+        JSON.parse(state.fakeDataItem.body.json),
         state.fakeDataItem.schema
       );
       console.log(jsonBodyMatchesSchema);
-      const file = new File(
+      /* const file = new File(
         [JSON.stringify({ foo: "bar" }, null, 2)],
         "meow.json",
         {
           type: "application/json;charset=utf-8"
         }
       );
-      saveAs(file);
+      saveAs(file); */
       // save to file using file-saver module
     },
     setFakeDataItemRecurrences({ commit }, recurrences: number) {
@@ -50,7 +51,7 @@ export default new Vuex.Store({
     setFakeDataItemSchema({ commit }, schema: object) {
       commit("setFakeDataItemSchema", schema);
     },
-    setFakeDataItemBody({ commit }, body: object) {
+    setFakeDataItemBody({ commit }, body: DataBody) {
       commit("setFakeDataItemBody", body);
     }
   }
