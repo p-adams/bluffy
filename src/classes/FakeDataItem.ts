@@ -9,12 +9,12 @@ export interface DataBody {
 export class FakeDataItem {
   private _types: DataTypes[] = [];
   private _recurrences: number = 0;
-  private _schema: object = {};
+  private _schema: string = "";
   private _body: DataBody;
   constructor(
     types: DataTypes[],
     recurrences: number,
-    schema: object = {},
+    schema: string,
     body: DataBody
   ) {
     this._types = types;
@@ -30,7 +30,7 @@ export class FakeDataItem {
     return this._recurrences;
   }
 
-  get schema(): object {
+  get schema(): string {
     return this._schema;
   }
 
@@ -46,7 +46,7 @@ export class FakeDataItem {
     this._recurrences = recurrences;
   }
 
-  set schema(schema: object) {
+  set schema(schema: string) {
     this._schema = schema;
   }
 

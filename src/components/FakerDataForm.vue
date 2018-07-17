@@ -38,10 +38,10 @@
             
             </el-form-item>
             <el-form-item v-else>
-              <el-button @click="schemaCreated = false">Edit schema</el-button>
+              <el-button @click="schemaCreated = false">Return to schema</el-button>
             </el-form-item>
-            <el-form-item v-if="schemaCreated">
-              <el-form-item label="Data fields">
+            <el-form-item v-if="schemaCreated" label="Data fields">
+              <el-form-item class="fields-builder">
                 <el-tabs type="border-card">
                   <el-tab-pane label="JSON">
                   <!-- fields builder -->
@@ -55,7 +55,9 @@
                         @click="onFormatJSONData()"
                         :disabled="!fakeDataItemJSONBody"
                       >Format data</el-button>
-                      <el-button @click="onHandleFakeDataItemBody()"
+                      <el-button
+                        @click="onHandleFakeDataItemBody()"
+                        :disabled="!fakeDataItemJSONBody.json"
                       >Create</el-button>
                     </el-row>
                   </el-tab-pane>
@@ -81,8 +83,9 @@
                     <el-col>
                       <el-button
                       @click="generateFakeDataItem(fakeDataItemFilename)"
-                      :disabled="!fakeDataFieldsCreated || !fakeDataItemFilename"
+                      :disabled="(!fakeDataFieldsCreated || !fakeDataItemFilename  || errorGeneratingFakeData)"
                     >Generate fake data</el-button>
+                   
                     </el-col>
                   </el-row>
                 </el-form-item>
@@ -114,9 +117,9 @@ export default class AppForm extends Vue {
    */
 
   private fakeDataItemRecurrences: number = 1
-  private fakeDataItemSchema: string = `{ "cities": array }`
+  private fakeDataItemSchema: string = `{ "cities": {"type": "array" } }`
   private fakeDataItemJSONBody: DataBody = {json: `{ "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`, formatted: false}
-  private fakeDataItemFilename: string = ""
+  private fakeDataItemFilename: string = "meow.json"
   private schemaCreated: boolean = false
   private fakeDataFieldsCreated: boolean = false
   private schemaBuilderOptions: object = {
@@ -143,7 +146,7 @@ export default class AppForm extends Vue {
   /**
    * Vuex State, Actions, and Getters
    */
-
+  @State('errorGeneratingFakeData') errorGeneratingFakeData: any
   @Action('setFakeDataItemRecurrences') setFakeDataItemRecurrences: any
   @Action('setFakeDataItemSchema') setFakeDataItemSchema: any
   @Action('setFakeDataItemBody') setFakeDataItemBody: any
@@ -160,6 +163,7 @@ export default class AppForm extends Vue {
   onHandleFakeDataItemBody() {
     this.setFakeDataItemBody(this.fakeDataItemJSONBody)
     this.fakeDataFieldsCreated = true
+    this.fieldsCreated()
   }
  
   onHandleFakeDataItemSchema() {
@@ -186,6 +190,22 @@ export default class AppForm extends Vue {
   onclearJSONData() {
     this.fakeDataItemJSONBody.json = ""
   }
+  fieldsCreated() {
+    if(this.errorGeneratingFakeData) {
+      this.$notify.error({
+        title: 'Failed to create Fake JSON data',
+        message: 'Please check that the fields match the schema you selected',
+      });
+      
+    }
+    else {
+      this.$notify({
+        title: 'Fake JSON data successfully created',
+        message: 'To generate recurrences of your fields, adjust data recurrences accordingly',
+        type: 'success'
+      });
+    }
+  }
 
 
  
@@ -199,5 +219,8 @@ export default class AppForm extends Vue {
 }
 .footer-inputs {
   margin-top: 20px;
+}
+.fields-builder {
+  margin-top: 40px;
 }
 </style>
