@@ -7,7 +7,8 @@
       <h5>A Web and CLI (coming soon) app for generating fake JSON data</h5>
       <div id="nav">
         <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> | 
+        <router-link to="/about">About</router-link> |
+        <router-link to="/create">Create your own</router-link> |
         <router-link to="/cli">CLI</router-link>
       </div>
     </el-header>

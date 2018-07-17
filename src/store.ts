@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    fakeDataItem: new FakeDataItem([], 1, "", { json: "", formatted: false }),
+    fakeDataItem: new FakeDataItem([], 0, "", { json: "", formatted: false }),
     errorGeneratingFakeData: <boolean>false
   },
   mutations: {

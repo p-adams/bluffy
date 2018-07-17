@@ -3,7 +3,8 @@
     <el-row :gutter="20">
       <el-col :span="12" :offset="6">
         <el-card>
-          <el-form ref="form">   
+          <el-form ref="form">
+            <h4>Create your own Faker Data</h4>
             <el-form-item
               v-if="!schemaCreated"
               label="Data schema builder (JSON)"
@@ -64,13 +65,6 @@
                 </el-tabs>
               </el-form-item>
               <el-form-item class="footer-inputs">
-                <el-form-item label="Data Recurrences">
-                  <el-input-number
-                      v-model="fakeDataItemRecurrences"
-                      @change="onHandleFakeDataItemRecurrences()"
-                      :min="1"
-                  />
-                </el-form-item>
                 <el-form-item label="File name">
                   <el-input
                     v-model="fakeDataItemFilename"
@@ -201,7 +195,7 @@ export default class AppForm extends Vue {
     else {
       this.$notify({
         title: 'Fake JSON data successfully created',
-        message: 'To generate recurrences of your fields, adjust data recurrences accordingly',
+        message: '',
         type: 'success'
       });
     }
@@ -214,6 +208,9 @@ export default class AppForm extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+h4 {
+  text-align: center;
+}
 .builder-buttons {
   margin-top: 5px;
 }

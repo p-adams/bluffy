@@ -1,17 +1,19 @@
 <template>
   <div class="home">
-    <FakerDataForm/>
+    <router-link to="/create">Create your own customized Fake</router-link>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import FakerDataForm from '@/components/FakerDataForm.vue'; // @ is an alias to /src
+// @ is an alias to /src
 
-@Component({
-  components: {
-    FakerDataForm,
-  },
-})
+@Component
 export default class Home extends Vue {}
 </script>
+<style lang="scss" scoped>
+.home {
+  text-align: center;
+}
+</style>
+
