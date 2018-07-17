@@ -4,7 +4,7 @@
       <el-col :span="12" :offset="6">
         <el-card>
           <el-form ref="form">
-            <h4>Create your own Faker Data</h4>
+            <h4>Create your own fake data</h4>
             <el-form-item
               v-if="!schemaCreated"
               label="Data schema builder (JSON)"

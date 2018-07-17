@@ -1,10 +1,24 @@
 <template>
   <div class="about">
-    <h1>About Faker Data</h1>
+    <h1>About Bluffy</h1>
+    <ul>
+      <li>Have you ever wanted to fetch some data for prototyping an idea?</li>
+      <li>Are you learning a new programming language and want to learn how to parse and display data?</li>
+      <li>Have you found fake data CLIs (command-line interfaces), libraries, and apps that generate -- </li>
+      <li>data for you, but you want data you can customize?</li>
+    </ul>
+    <p>If you answered yes to any (or all) of those questions, <span :style="{'font-weight': 'bolder'}">Bluffy is for you!</span></p>
   </div>
 </template>
 <style lang="scss" scoped>
-.about {
-  text-align: center;
+ul {
+  list-style: none;
+}
+li {
+  padding: 10px;
+}
+
+li:nth-child(4) {
+  margin-left: 15px;
 }
 </style>

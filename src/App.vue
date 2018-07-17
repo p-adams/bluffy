@@ -3,8 +3,12 @@
     <el-container>
     <el-header>
       <h1>Bluffy</h1>
+      <img
+        class="bluffy-image"
+        src="@/assets/bluffy.jpg"/>
       <h3>Fake it 'til you make it</h3>
       <h5>A Web and CLI (coming soon) app for generating fake JSON data</h5>
+  
       <div id="nav">
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link> |
@@ -40,6 +44,10 @@
   }
 }
 .main {
-  margin-top: 160px;
+  margin-top: 250px;
+}
+.bluffy-image {
+  width: 50px;
+  height: 50px;
 }
 </style>
