@@ -113,7 +113,7 @@ export default class AppForm extends Vue {
   private fakeDataItemRecurrences: number = 1
   private fakeDataItemSchema: string = `{ "cities": {"type": "array" } }`
   private fakeDataItemJSONBody: DataBody = {json: `{ "cities": [ { "name": "New York City", "pop": "8.538 million" } ] }`, formatted: false}
-  private fakeDataItemFilename: string = "meow.json"
+  private fakeDataItemFilename: string = ""
   private schemaCreated: boolean = false
   private fakeDataFieldsCreated: boolean = false
   private schemaBuilderOptions: object = {

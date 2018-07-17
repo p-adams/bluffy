@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
     <el-header>
-      <h1>Faker Data</h1>
+      <h1>Bluffy</h1>
       <h3>Fake it 'til you make it</h3>
       <h5>A Web and CLI (coming soon) app for generating fake JSON data</h5>
       <div id="nav">
