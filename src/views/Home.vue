@@ -25,9 +25,9 @@ export default class Home extends Vue {}
 ul {
   list-style: none;
 }
-ul li:after {
+ul li:before {
   color: red;
-  content: " ✓";
+  content: "✓ ";
 }
 li {
   padding: 10px;
