@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <h4>Creating your own fake data is a cinch:</h4>
     <ul>
       <li>Define your data schema</li>
       <li>Plug values into the fields</li>
@@ -7,7 +8,9 @@
       <li>Name the file</li>
       <li>Done</li>
     </ul>
-    <router-link to="/create">Create your own customized fake data now!</router-link>
+    <div >
+      <router-link to="/create">Create your own customized fake data now!</router-link>
+    </div>
   </div>
 </template>
 
@@ -23,7 +26,8 @@ ul {
   list-style: none;
 }
 ul li:after {
-  content: "✓";
+  color: red;
+  content: " ✓";
 }
 li {
   padding: 10px;

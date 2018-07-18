@@ -17,7 +17,11 @@
       </div>
     </el-header>
     <el-main class="main">
-      <router-view/>
+      <el-row :gutter="20">
+        <el-col :span="16" :offset="4">
+          <router-view/>
+        </el-col>
+      </el-row>
     </el-main>
     </el-container>
   </div>
@@ -37,9 +41,9 @@
   padding: 30px;
   a {
     font-weight: bold;
-    color: #ab47bc;
+    color: black;
     &.router-link-exact-active {
-      color: #80cbc4;
+      color: darkgray;
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="cli">CLI</div>
+    <div class="cli">bluffy-cli coming soon!</div>
 </template>
 <style lang="scss" scoped>
 .cli {

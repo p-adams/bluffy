@@ -1,95 +1,91 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-col :span="12" :offset="6">
-        <el-card>
-          <el-form ref="form">
-            <h4>Create your own fake data</h4>
-            <el-form-item
-              v-if="!schemaCreated"
-              label="Data schema builder (JSON)"
-              class="data-schema-input"
-            >
+    <el-card>
+      <el-form ref="form">
+        <h4>Create your own fake data</h4>
+        <el-form-item
+          v-if="!schemaCreated"
+          label="Data schema builder (JSON)"
+          class="data-schema-input"
+        >
+          <el-col>
+            <!-- schema builder -->
+            <el-card>
+            <codemirror
+              class="schema-builder-mirror"
+              :options="schemaBuilderOptions"
+              v-model="fakeDataItemSchema"
+            />
+            <el-row class="builder-buttons">
               <el-col>
-                <!-- schema builder -->
-                <el-card>
+                <el-button
+                  @click="onClearSchema()"
+                  :disabled="!fakeDataItemSchema"
+                >Clear</el-button>
+                <el-button
+                  @click="onFormatSchema()"
+                  :disabled="!fakeDataItemSchema"
+                >Format</el-button>
+                <el-button
+                  @click="onHandleFakeDataItemSchema()"
+                  :disabled="!fakeDataItemSchema"
+                >Create</el-button>
+              </el-col>
+            </el-row>
+            </el-card>
+          </el-col>
+        
+        </el-form-item>
+        <el-form-item v-else>
+          <el-button @click="schemaCreated = false">Return to schema</el-button>
+        </el-form-item>
+        <el-form-item v-if="schemaCreated" label="Data fields">
+          <el-form-item class="fields-builder">
+            <el-tabs type="border-card">
+              <el-tab-pane label="JSON">
+              <!-- fields builder -->
                 <codemirror
-                  class="schema-builder-mirror"
-                  :options="schemaBuilderOptions"
-                  v-model="fakeDataItemSchema"
+                  v-model="fakeDataItemJSONBody.json"
+                  :options="fieldsBuilderOptions"
                 />
                 <el-row class="builder-buttons">
-                  <el-col>
-                    <el-button
-                      @click="onClearSchema()"
-                      :disabled="!fakeDataItemSchema"
-                    >Clear</el-button>
-                    <el-button
-                      @click="onFormatSchema()"
-                      :disabled="!fakeDataItemSchema"
-                    >Format</el-button>
-                    <el-button
-                      @click="onHandleFakeDataItemSchema()"
-                      :disabled="!fakeDataItemSchema"
-                    >Create</el-button>
-                  </el-col>
+                  <el-button @click="onClearJSONData()">Clear data</el-button>
+                  <el-button
+                    @click="onFormatJSONData()"
+                    :disabled="!fakeDataItemJSONBody"
+                  >Format data</el-button>
+                  <el-button
+                    @click="onHandleFakeDataItemBody()"
+                    :disabled="!fakeDataItemJSONBody.json"
+                  >Create</el-button>
                 </el-row>
-                </el-card>
-              </el-col>
-            
+              </el-tab-pane>
+            </el-tabs>
+          </el-form-item>
+          <el-form-item class="footer-inputs">
+            <el-form-item label="File name">
+              <el-input
+                v-model="fakeDataItemFilename"
+                placeholder="Enter filename; For example, cats.json"
+                required
+                />
             </el-form-item>
-            <el-form-item v-else>
-              <el-button @click="schemaCreated = false">Return to schema</el-button>
+            <el-form-item>
+              <el-row class="builder-buttons">
+                <el-col>
+                  <el-button
+                  @click="generateFakeDataItem(fakeDataItemFilename)"
+                  :disabled="(!fakeDataFieldsCreated || !fakeDataItemFilename  || errorGeneratingFakeData)"
+                >Generate fake data</el-button>
+                
+                </el-col>
+              </el-row>
             </el-form-item>
-            <el-form-item v-if="schemaCreated" label="Data fields">
-              <el-form-item class="fields-builder">
-                <el-tabs type="border-card">
-                  <el-tab-pane label="JSON">
-                  <!-- fields builder -->
-                    <codemirror
-                      v-model="fakeDataItemJSONBody.json"
-                      :options="fieldsBuilderOptions"
-                    />
-                    <el-row class="builder-buttons">
-                      <el-button @click="onClearJSONData()">Clear data</el-button>
-                      <el-button
-                        @click="onFormatJSONData()"
-                        :disabled="!fakeDataItemJSONBody"
-                      >Format data</el-button>
-                      <el-button
-                        @click="onHandleFakeDataItemBody()"
-                        :disabled="!fakeDataItemJSONBody.json"
-                      >Create</el-button>
-                    </el-row>
-                  </el-tab-pane>
-                </el-tabs>
-              </el-form-item>
-              <el-form-item class="footer-inputs">
-                <el-form-item label="File name">
-                  <el-input
-                    v-model="fakeDataItemFilename"
-                    placeholder="Enter filename; For example, cats.json"
-                    required
-                    />
-                </el-form-item>
-                <el-form-item>
-                  <el-row class="builder-buttons">
-                    <el-col>
-                      <el-button
-                      @click="generateFakeDataItem(fakeDataItemFilename)"
-                      :disabled="(!fakeDataFieldsCreated || !fakeDataItemFilename  || errorGeneratingFakeData)"
-                    >Generate fake data</el-button>
-                   
-                    </el-col>
-                  </el-row>
-                </el-form-item>
-              </el-form-item>
-            </el-form-item>
-          </el-form>
-        </el-card>
-    </el-col>
+          </el-form-item>
+        </el-form-item>
+      </el-form>
+    </el-card>
    
-    </el-row>
   </div>
 </template>
 
