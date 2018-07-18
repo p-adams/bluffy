@@ -3,10 +3,10 @@
     <ul>
       <li>Define your data schema</li>
       <li>Plug values into the fields</li>
+      <li>Format to make it pretty (optional)</li>
       <li>Name the file</li>
+      <li>Done</li>
     </ul>
-    <p>And that's it!</p>
-    <p>Choose from our list of pre-defined data (you pick the fields/how much data you want), or...</p>
     <router-link to="/create">Create your own customized fake data now!</router-link>
   </div>
 </template>
