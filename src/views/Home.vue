@@ -26,7 +26,7 @@ ul {
   list-style: none;
 }
 ul li:before {
-  color: red;
+  color: green;
   content: "✓ ";
 }
 li {

@@ -7,7 +7,7 @@
         class="bluffy-image"
         src="@/assets/bluffy.jpg"/>
       <h3>Fake it 'til you make it</h3>
-      <h5>A Web and CLI (coming soon) app for generating fake JSON data</h5>
+      <h5>A Web and CLI app for generating fake JSON data</h5>
   
       <div id="nav">
         <router-link to="/">Home</router-link> |
